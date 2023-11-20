@@ -1,12 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System;
-using System.Text;
 using System.Security.Cryptography;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 
 class Ejercicio
@@ -24,36 +19,36 @@ class Ejercicio
 
         Console.WriteLine("Inserte el numero de hilos en los que desea dividirlo: ");
 
-        var ThreadsNumber = Convert.ToInt32(Console.ReadLine());
+        var threadsnumber = Convert.ToInt32(Console.ReadLine());
 
-        var Threads = new List<Thread>();
+        var threads = new List<Thread>();
 
-        for (int n = 0; n < ThreadsNumber; n++) // n = numero
+        for (int n = 0; n < threadsnumber; n++) // n = numero
         {
-            var fraccion = readlinestxt.Length / ThreadsNumber;
+            var fraccion = readlinestxt.Length / threadsnumber;
             var start = fraccion * n;
             var end = fraccion * (n + 1);
 
             var section = readlinestxt[new Range(start, end)];
 
-            Threads.Add(new Thread(() =>
+            threads.Add(new Thread(() =>
             {
-                Console.WriteLine("nuevo hilo");
-                var encontradoEnEsta = Sha256Finder(section, hash);
-                if (encontradoEnEsta) find = true;
-                Console.WriteLine(!encontradoEnEsta ? "no encontrado de entrada " + start + " a entrada " + end : "encontrado de entrada " + start + " a entrada " + end);
+                Console.WriteLine("New Thread");
+                var FoundedInThread = Sha256Finder(section, hash); // Bucaremos el Sha256
+                if (FoundedInThread) find = true;
+                Console.WriteLine(!FoundedInThread ? "No se ha encontrado desde la entrada " + start + " a la entrada " + end : "Si se ha encontrado desde la entrada " + start + " a la entrada " + end);
             })
             );
         }
 
         var StartMoment = DateTime.Now;
         var todosTerminados = false;
-        foreach (var hilo in Threads){hilo.Start();}
+        foreach (var hilo in threads){hilo.Start();}
 
         while (!todosTerminados)
         {
             todosTerminados = true;
-            foreach (var hilo in Threads)
+            foreach (var hilo in threads)
             {if (hilo.IsAlive){todosTerminados = false;}}
 
             if (find){break;}
