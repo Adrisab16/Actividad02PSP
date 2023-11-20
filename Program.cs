@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿// Actividad FuerzaBrutaAdrianSabinoPerez
 
 using System.Security.Cryptography;
 using System.Text;
@@ -34,7 +34,7 @@ class Ejercicio
             threads.Add(new Thread(() =>
             {
                 Console.WriteLine("New Thread");
-                var FoundedInThread = Sha256Finder(section, hash); // Bucaremos el Sha256
+                var FoundedInThread = Sha256Finder(section, obj: hash); // Bucaremos el Sha256
                 if (FoundedInThread) find = true;
                 Console.WriteLine(!FoundedInThread ? "No se ha encontrado desde la entrada " + start + " a la entrada " + end : "Si se ha encontrado desde la entrada " + start + " a la entrada " + end);
             })
@@ -48,35 +48,27 @@ class Ejercicio
         while (!todosTerminados)
         {
             todosTerminados = true;
-            foreach (var hilo in threads)
-            {if (hilo.IsAlive){todosTerminados = false;}}
-
+            foreach (var hilo in threads){if (hilo.IsAlive){todosTerminados = false;}}
             if (find){break;}
         }
 
-        Console.WriteLine("hemos tardado " + (DateTime.Now - StartMoment));
-
         Console.WriteLine("el hash coincide con el de la combinacion " + password);
-
         Console.WriteLine("Presione cualquier tecla para salir.");
         Console.ReadKey();
 
     }
 
-
-
     static bool Sha256Finder(string[] lines, string obj)
     {
         foreach (var line in lines)
         {
-            var encriptado = Encryption(line);
-            if (encriptado == obj)
+            var encrypted = Encryption(line);
+            if (encrypted == obj)
             {password = line;return true;}
 
             if (find)
             {break;}
         }
-
         return false;
     }
 
@@ -85,10 +77,11 @@ class Ejercicio
         var resultado = string.Empty;
         var convert = SHA256.Create();
 
+        // Crea el objeto de conversion
         var hashValue = convert.ComputeHash(Encoding.UTF8.GetBytes(cadena));
+        // Lo pasará de Byte a String y lo formateará
         foreach (byte b in hashValue)
         {resultado += $"{b:X2}";}
         return resultado;
     }
-
 }
