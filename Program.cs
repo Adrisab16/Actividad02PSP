@@ -11,7 +11,7 @@ class Ejercicio
 
     static void Main()
     {
-        var readlinestxt = File.ReadAllLines(@".\2151220-passwords.txt");
+        var readlinestxt = File.ReadAllLines(@"E:\VisualStudio\Repositorios\Actividad02PSP\2151220-passwords.txt");
 
         Console.WriteLine("Inserte el hash para la comparación: ");
 
@@ -42,13 +42,13 @@ class Ejercicio
         }
 
         var StartMoment = DateTime.Now;
-        var todosTerminados = false;
+        var allfinished = false;
         foreach (var hilo in threads){hilo.Start();}
 
-        while (!todosTerminados)
+        while (!allfinished)
         {
-            todosTerminados = true;
-            foreach (var hilo in threads){if (hilo.IsAlive){todosTerminados = false;}}
+            allfinished = true;
+            foreach (var hilo in threads){if (hilo.IsAlive){allfinished = false;}}
             if (find){break;}
         }
 
@@ -58,6 +58,7 @@ class Ejercicio
 
     }
 
+    // Función con la finalidad de encontrar un Sha256 específico
     static bool Sha256Finder(string[] lines, string obj)
     {
         foreach (var line in lines)
@@ -72,14 +73,15 @@ class Ejercicio
         return false;
     }
 
+    // Función para encriptar:
     static string Encryption(string cadena)
     {
         var resultado = string.Empty;
         var convert = SHA256.Create();
 
-        // Crea el objeto de conversion
+        // Crea el objeto de conversion:
         var hashValue = convert.ComputeHash(Encoding.UTF8.GetBytes(cadena));
-        // Lo pasará de Byte a String y lo formateará
+        // Lo pasará de Byte a String y lo formateará:
         foreach (byte b in hashValue)
         {resultado += $"{b:X2}";}
         return resultado;
